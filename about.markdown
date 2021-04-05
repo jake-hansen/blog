@@ -18,8 +18,6 @@ titles:
 key: page-about
 ---
 
-Just say something about yourself. :+1:
+Hi, I'm Jake Hansen. I'm a fourth-year undergraduate student at the University of Nebraska at Omaha studying Computer Science and Cybersecurity.
 
-{% highlight javascript %}
-(() => console.log('hello, world!'))();
-{% endhighlight %}
+I like learning about networking, programming techniques, secure application design, and web security. Sometimes I work on some random personal projects just to learn a new framwork or language better. When I'm working on something cool or useful I'll try to share it here.
