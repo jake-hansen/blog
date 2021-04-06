@@ -2,13 +2,17 @@
 layout: article
 title: How I Created a Twitter Vaccine Bot
 tags: twitter-bot covid personal-projects
+sitemap:
+    priority: 1
+    changefreq: 'monthly'
+    lastmod: 2021-04-06T10:37:00-05:00
 ---
 
-With COVID vaccines become more available to younger age groups, I decided to start looking to schedule a vaccination appointment for myself. Unfortunately, I found that trying to schedule an appointment was a game of constantly hitting the refresh button.
+With COVID vaccines becoming more available to younger age groups, I decided to start looking to schedule a vaccination appointment for myself. Unfortunately, I found that trying to schedule an appointment was a game of constantly hitting the refresh button.
 
-The local pharmacy chain in my area that I was trying to get vaccinated at provided a sign up form online for appointments, but there was no way to be notified when new appointments were published. Lore circulated on local Twitter saying, "new appointments are published at midnight, check then!". Or, "check around 8 AM and 4 PM, that's when they release new appointments!" Clearly, there was no official answer.
+The local pharmacy chain in my area that I was trying to get vaccinated at provided a sign up form online for appointments, but there was no way to be notified when new appointments were published. Lore circulated on local Twitter saying, "new appointments are published at midnight, check then!" Or, "check around 8 AM and 4 PM, that's when they release new appointments!" Clearly, there was no official answer.
 
-After a lucky refresh, I finally found a pharmacy with availability. Straight to the sign up page I went. I selected an appointment time, filled out about 10 minutes worth of forms, and finally hit the submit button. Instead of getting a sweet confirmation of my newly reserved appointment, I received an error that said the appointment time had already been taken. Clearly, someone completed their forms faster than I did and was able to get their appointment scheduled before mine. "No worries, I'll just select another timeslot," I naively thought. Going back to the time selection page, I found taht all the previous appointments that were available had disappeared. Growing increasingly frustrated, I thought that there must be another way. And, of course, like most things, there is. Luckily, I'm a CS student that is completely remote (thanks pandemic), so I had plenty of time on my hands to devise a solution. 
+After a lucky refresh, I finally found a pharmacy with availability. Straight to the sign up page I went. I selected an appointment time, filled out about 10 minutes worth of forms, and finally hit the submit button. Instead of getting a sweet confirmation of my newly reserved appointment, I received an error that said the appointment time had already been taken. Clearly, someone completed their forms faster than I did and was able to get their appointment scheduled before mine. "No worries, I'll just select another timeslot," I naively thought. Going back to the time selection page, I found that all the previous appointments that were available had disappeared. Growing increasingly frustrated, I thought that there must be another way. And, of course, like most things, there is. Luckily, I'm a CS student that is completely remote (thanks pandemic), so I had plenty of time on my hands to devise a solution. 
 
 Ultimately, out of the goodness of my heart and a little spite, I created a Twitter bot that automatically tweets when new vaccine appointments are found at my local pharmacy chain. It has been extremely successful and has helped plenty of people get signed up for vaccine appointments. Here, I'll show you how I did that.
 
