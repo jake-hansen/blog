@@ -51,6 +51,7 @@ author:
   linkedin  : # "user_name" the last part of your profile url, e.g. https://www.linkedin.com/in/user_name
   github    : jake-hansen # "user_name" the last part of your profile url, e.g. https://github.com/user_name
   npm       : # "user_name" the last part of your profile url, e.g. https://www.npmjs.com/~user_name
+  gpg       : "0xa5b96a569b23749f66317b233742f6190dd40b23"
 
 
 ## => GitHub Repository (if the site is hosted by GitHub)
