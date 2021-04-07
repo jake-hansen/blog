@@ -30,6 +30,7 @@ tagline: A blog about networking, security, programming techniques, and everythi
 twitter:
   username: caffeine_coding
   card: summary
+logo: assets/images/logo/logo.svg
 
 ## => Language and Timezone
 ##############################
@@ -47,7 +48,7 @@ author:
   bio       : 
   email     : jakedhansen@outlook.com
   facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
-  twitter   : # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name
+  twitter   : caffeine_coding # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name
   weibo     : # "user_id"   the last part of your profile url, e.g. https://www.weibo.com/user_id/profile?...
   googleplus: # "user_id"   the last part of your profile url, e.g. https://plus.google.com/u/0/user_id
   telegram  : # "user_name" the last part of your profile url, e.g. https://t.me/user_name

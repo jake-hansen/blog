@@ -9,7 +9,15 @@ description: >
 sitemap:
     priority: 1
     changefreq: 'monthly'
-    lastmod: 2021-04-07T11:00:00-05:00
+    lastmod: 2021-04-07T12:15:00-05:00
+modify_date: 2021-04-07T12:15:00-05:00
+seo:
+  date_modified: 2021-04-07T12:15:00-05:00
+article_header:
+  type: cover
+  image: 
+    src: assets/images/united-nations-covid-19-response-m6OZNfmo2Dk-unsplash.jpg
+image: assets/images/united-nations-covid-19-response-m6OZNfmo2Dk-unsplash.jpg
 ---
 
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
