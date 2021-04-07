@@ -41,7 +41,7 @@ There are a couple of things to consider when issuing an access token:
 
 1. Duration of Access Token
    
-   How long should an access token be valid? Ideally, an access token should only be valid for a short period of time, say 10-15 minutes. An access token should never be valid for a long period of time in order to reduce the attack window in which a stolen token can be used. 
+   How long should an access token be valid? Ideally, an access token should only be valid for a short period of time, say 10-15 minutes. An access token should never be valid for a long period of time in order to reduce the attack window in which a stolen token can be used. Remember, JWTs *cannot* be revoked. So, the only thing that can revoke them is time.
 
 2. Claims
    
@@ -65,8 +65,68 @@ As a client, once again, you are limited to how you can send the token to the se
 
 ### Design
 
-Now that we've discussed all the possibilities, let's discuss how I decided to implement access tokens. First, the structure of the custom claims for the access token is different depending on the application I'm using them in. Some applications might need one piece of information about the user and some applications might need another. So custom claims are out of scope for my JWT package. Next, I decided to pass the access token to the client in the body of the request. This allows for great flexibility for supporting a variety of clients. Browser clients will grab the token and store it in local storage. I also decided to accept the access token in the `Authorization` header. 
+Now that we've discussed all the possibilities, let's discuss how I decided to implement access tokens. First, the structure of the custom claims for the access token is different depending on the application I'm using them in. Some applications might need one piece of information about the user and some applications might need another. So custom claims are out of scope for my JWT package. Next, I decided to pass the access token to the client in the body of the request. This allows for great flexibility for supporting a variety of clients. Browser clients will grab the token and store it in local storage. I also decided to accept the access token in the `Authorization` header.
+
+Here is a quick table that provides an easy view of the pros and cons, summarized from above.
+
+| Store JWT In       | Vulnerable to XSS | Vulnerable to CSRF | Send in Auth Header | Send as Cookie |
+| -------------------| :---------------: | :----------------: | :-----------------: | :------------: |
+| Cookie             |                   |          X         |                     |        X       |
+| HTTP-Only Cookie   |                   |          X         |                     |        X       |
+| Local Storage      |         X         |                    |           X         |                |
 
 ## The Token Expiration Problem
 
-One problem with access tokens is that they have a short expiration. 
+One problem with using JWTs as access tokens is that they have a short expiration. This leads to a bad experience for the user since they would need to reexchange their credentials for a new access token every time their current access token expires. Imagine needing to re-login to a site every 10 minutes. That would be a terrible experience.
+
+In order to fix this problem, we need a way to issue new access tokens to a user without requiring them to reenter their credentials.
+
+### Refresh Tokens
+
+Refresh tokens can be used *in place* of credentials to obtain a new access token. The way this works is fairly clever. When a user first logs in using their credentials, they are issued a normal access token, *and* a refresh token. A refresh token is nothing more than a JWT, but with a much longer expiry time. Something like months.
+
+When a user's access token expires, they can obtain a new one by sending a request to an endpoint such as `/auth/refresh` containing their refresh token. As long as their refresh token is valid, the server issues the user a new access token. This process is repeated every time the user's access token expires - up until their refresh token expires. Once the user's refresh token expires, they will be required to get a new access token and refresh token by providing their credentials at the `/auth` endpoint.
+
+Wait a minute. Isn't having a long expiration time for a JWT bad? Yes, but refresh tokens are implemented a little differently when compared to access tokens. Let me explain.
+
+When talking about the differences in implementation between access tokens and refresh tokens, we need to discuss the criteria which is considered when determining a valid token. These criteria are different for access tokens and refresh tokens.
+
+Access Token Validity Criteria
+* Signed by application
+* Not expired
+* Being used after `nbf` time
+
+Refresh Token Validity Criteria
+* Signed by application
+* Not expired
+* Being used after `nbf` time
+* *Not revoked*
+
+Notice that the only difference in criteria between access and refresh tokens is the revocation status of the refresh token. But how do we determine revocation status of a refresh token if JWTs cannot be revoked?
+
+Well, we cheat a little by actually storing the issued refresh token in a database along with a boolean value that determines the revocation status. So, upon each usage of the refresh token, we check all the normal criteria for a JWT, but we also look the refresh token up in the database to ensure that it hasn't been revoked. This revocation lookup is the key principle which allows us to safely set a long expiry time for a refresh token - because we then always have a 'kill switch' which can revoke access to the refresh token, instead of just relying upon the expiry of the token.
+
+But, doesn't this take away the main advantage of JWTs in that we don't have to perform database lookups like we have to do for sessions? Yes. But the key is that we are only performing a database lookup every time the refresh token is used, which is much less frequently than the period of access token usage. So, like everything, it's a trade off.
+
+### Issuing a Refresh Token
+
+Refresh tokens should be issued at the same time when a user's credentials are exchanged for an access token. A refresh token usually doesn't have as many custom claims as an access token, since the refresh token only needs to identify the user.
+
+### Returning an Refresh Token
+
+Technically, you can return a refresh token to a user in the same ways in which you return an access token. But, refresh tokens are extremely powerful. So, we should choose a very secure method. Our best bet is to go with an HTTP-only cookie. That way, the client has no access to the refresh token making it impervious to XSS attacks. We will look at how to mitigate CSRF for the refresh token in a minute.
+
+### Storing and Sending the Token
+
+Since refresh tokens should only be set in an HTTP-only cookie, we don't have to worry about storing or sending the token, since the browser will take care of this for us.
+
+### Refresh Token Replay Attacks
+
+### CSRF Protection
+
+In order to protect the refresh token against CSRF attacks, we need to rely on the trusty CSRF token. Remember, a CSRF token is nothing more than a random string with good entropy and is non predictable. An easy and secure way to do this is set the CSRF token as a claim in the refresh token and send the CSRF token in the body of the request when a user receives a refresh token. Whenever the user sends a refresh request, they will need to attach the CSRF token to a predetermined header. The server can then verify that the given CSRF token in the header matches the CSRF token in the refresh token's claims. 
+
+
+### Design
+
+
