@@ -2,10 +2,14 @@
 layout: article
 title: How I Created a Twitter Vaccine Bot
 tags: twitter-bot covid personal-projects
+description: >
+  COVID vaccination appointments are hard to find. Here, I'll show you how
+  I created a bot to automatically find new vaccination appointments and
+  tweet about them.
 sitemap:
     priority: 1
     changefreq: 'monthly'
-    lastmod: 2021-04-06T10:37:00-05:00
+    lastmod: 2021-04-07T11:00:00-05:00
 ---
 
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>

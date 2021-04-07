@@ -22,8 +22,14 @@ url     : https://blog.jakedhansen.com # the base hostname & protocol for your s
 baseurl : # does not include hostname
 title   : Coding Caffeine
 description: > # this means to ignore newlines until "Language & timezone"
-  I post about cool things I'm working on sometimes.
+  A blog about networking, security, programming techniques, and everything in between, 
+  by Jake Hansen.
 
+# Jekyll SEO
+tagline: A blog about networking, security, programming techniques, and everything in between. 
+twitter:
+  username: caffeine_coding
+  card: summary
 
 ## => Language and Timezone
 ##############################
@@ -224,3 +230,4 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jemoji
+  - jekyll-seo-tag
