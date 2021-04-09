@@ -505,6 +505,8 @@ I really enjoyed this project. To get an initial, crude version up and running i
 
 This Twitter bot has helped a lot of people sign up for their vaccination appointments so far, and that is truly rewarding. To see an application I've developed actually impact peoples' lives for the better is priceless, and has given me motivation to continue making applications that others find useful.
 
+The full project is available [here](https://github.com/jake-hansen/hyvee-vaccine-tracker) on GitHub.
+
 <blockquote class="twitter-tweet" align="center"><p lang="en" dir="ltr">Shout out to <a href="https://twitter.com/itsjakehansen?ref_src=twsrc%5Etfw">@itsjakehansen</a> for the amazing vaccine bot that helped me and my bf get our first shots today, and I was able to help a friend with immune issues get an appointment for Friday. He tried for a month and got nowhere until <a href="https://twitter.com/HyveeTracker?ref_src=twsrc%5Etfw">@HyveeTracker</a> thank you so much, Jake</p>&mdash; Jaycie (@jaycre_leigh) <a href="https://twitter.com/jaycre_leigh/status/1379188456480456707?ref_src=twsrc%5Etfw">April 5, 2021</a></blockquote>
 
 <blockquote class="twitter-tweet" align="center"><p lang="en" dir="ltr">Hey Omaha friends, looking to get vaccinated? <br><br>Literally, follow <a href="https://twitter.com/HyveeTracker?ref_src=twsrc%5Etfw">@HyveeTracker</a> and you&#39;ll probably have an appointment by end of today or tomorrow.<br><br>Don&#39;t know who developed this thing, but it&#39;s extremely on point. I&#39;ve helped a couple friends get their shot through this!</p>&mdash; Austin Gaule (@austinomaha) <a href="https://twitter.com/austinomaha/status/1379094387070799873?ref_src=twsrc%5Etfw">April 5, 2021</a></blockquote>
