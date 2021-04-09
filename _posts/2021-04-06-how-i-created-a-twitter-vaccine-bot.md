@@ -9,10 +9,10 @@ description: >
 sitemap:
     priority: 1
     changefreq: 'monthly'
-    lastmod: 2021-04-07T12:15:00-05:00
-modify_date: 2021-04-07T12:15:00-05:00
+    lastmod: 2021-04-08T19:30:00-05:00
+modify_date: 2021-04-08T19:30:00-05:00
 seo:
-  date_modified: 2021-04-07T12:15:00-05:00
+  date_modified: 2021-04-08T19:30:00-05:00
 article_header:
   type: cover
   image: 
@@ -33,15 +33,15 @@ Ultimately, out of the goodness of my heart and a little spite, I created a Twit
 <blockquote align="center" class="twitter-tweet"><p lang="en" dir="ltr">This account tweets when new vaccine appointments become available at HyVee pharmacies in the Omaha/Lincoln/Council Bluffs area. Appointments go fast so enabling notifications is recommended.<br><br>You&#39;ll still need to register for an appointment by using the link in each tweet.</p>&mdash; HyVee Vaccine Tracker (@HyveeTracker) <a href="https://twitter.com/HyveeTracker/status/1377029788293066756?ref_src=twsrc%5Etfw">March 30, 2021</a></blockquote>
 
 # Exploring the API
-The first thing I had to do was figure out how the appointment sign up page worked on the [pharmacy's webiste](https://www.hy-vee.com/my-pharmacy/covid-vaccine). After playing around in the web inspector for a bit, I found that a GET request was being made to the endpoint `https://www.hy-vee.com/my-pharmacy/api/graphql`. Now, this looked like a GraphQL API call, but I don't have experience in GraphQL. Thankfully, it was easy to figure out. The body that was being sent in the request looked like this:
+The first thing I had to do was figure out how the appointment sign up page worked on the [pharmacy's website](https://www.hy-vee.com/my-pharmacy/covid-vaccine). After playing around in the web inspector for a bit, I found that a GET request was being made to the endpoint `https://www.hy-vee.com/my-pharmacy/api/graphql`. Now, this looked like a GraphQL API call, but I don't have experience in GraphQL. Thankfully, it was easy to figure out. The body that was being sent in the request looked like this:
 
 {% highlight json %}
 {
   "operationName": "SearchPharmaciesNearPointWithCovidVaccineAvailability",
   "variables": {
     "radius": 10,
-    "latitude": redacted,
-    "longitude": redacted
+    "latitude": 41.2354329,
+    "longitude": -95.99383390000001
   },
   "query": "query SearchPharmaciesNearPointWithCovidVaccineAvailability($latitude: Float!, $longitude: Float!, $radius: Int! = 10) {\n  searchPharmaciesNearPoint(latitude: $latitude, longitude: $longitude, radius: $radius) {\n    distance\n    location {\n      locationId\n      name\n      nickname\n      phoneNumber\n      businessCode\n      isCovidVaccineAvailable\n      covidVaccineEligibilityTerms\n      address {\n        line1\n        line2\n        city\n        state\n        zip\n        latitude\n        longitude\n        __typename\n      }\n      __typename\n    }\n    __typename\n  }\n}\n"
 }
@@ -408,7 +408,7 @@ func scanAPI() {
 }
 {% endhighlight %}
 
-This definitely worked, and was simple, but I found it to be a little lackluster. I always try to teach myself something new when it comes to making a new projects, so I decided to use Go's `time.Ticker`. 
+This definitely worked, and was simple, but I found it to be a little lackluster. I always try to teach myself something new when it comes to making a new project, so I decided to use Go's `time.Ticker`. 
 
 {% highlight go %}
 func main() {
@@ -436,7 +436,7 @@ func startBot(pharmacyRepo *PharmacyMap, done chan bool, ticker *time.Ticker) {
 
 The benefit of using a `Ticker` over just `time.Sleep()` is that the Ticker gets us really close to running exactly on our selected interval.
 
-For example, with the sleep method, let's say our pharmacy update takes 10 seconds. The update would take place, and then the program would sleep for 60 seconds. This means our updating is only being performed every 70 seconds.
+For example, with the sleep method, let's say our pharmacy update takes 10 seconds. The update would take place, and then the program would sleep for 60 seconds. This means our updating process is only being performed every 70 seconds.
 
 The internals of `Ticker` take this problem into account. So, if our update takes 10 seconds, the next scheduled interval will be adjusted to 50 seconds, bringing us to a grand total of a 60s interval.
 
@@ -451,8 +451,8 @@ func updatePharmacies(pharmacyRepo *PharmacyMap) {
 	fmt.Printf("Updating pharmacies... at %s\n", time.Now())
 	omahaSearchParams := api.Variables{
 		Radius:    75,
-		Latitude:  redacted,
-		Longitude: redacted,
+		Latitude:  41.2354329,
+		Longitude: -95.99383390000001,
 	}
 
 	deliverers := []Deliverer{tweet.New() ,consoleprinter.New()}
@@ -477,7 +477,7 @@ func updatePharmacies(pharmacyRepo *PharmacyMap) {
 }
 {% endhighlight %}
 
-I also have a helper struct, interface, and typee.
+I also have a helper struct, interface, and type.
 
 {% highlight go %}
 type PharmacyMap map[domain.PharmacyID]*domain.Pharmacy
@@ -503,7 +503,7 @@ For simplicities sake, I've used a simple map as my pharmacy *repository*. A mor
 
 I really enjoyed this project. To get an initial, crude version up and running it only took me about an hour. After making some improvements by refactoring and switching to `time.Ticker` I put in another couple of hours. This application is hosted on a tiny AWS EC2 instance, and costs next to nothing to operate.
 
-This Twitter bot has helped a lot of people sign up for their vaccination appointments so far, and that is truly rewarding. To see an application I've developed actually impact peoples' lives for the better is priceless, and has given me motivation to continue in my career field.
+This Twitter bot has helped a lot of people sign up for their vaccination appointments so far, and that is truly rewarding. To see an application I've developed actually impact peoples' lives for the better is priceless, and has given me motivation to continue making applications that others find useful.
 
 <blockquote class="twitter-tweet" align="center"><p lang="en" dir="ltr">Shout out to <a href="https://twitter.com/itsjakehansen?ref_src=twsrc%5Etfw">@itsjakehansen</a> for the amazing vaccine bot that helped me and my bf get our first shots today, and I was able to help a friend with immune issues get an appointment for Friday. He tried for a month and got nowhere until <a href="https://twitter.com/HyveeTracker?ref_src=twsrc%5Etfw">@HyveeTracker</a> thank you so much, Jake</p>&mdash; Jaycie (@jaycre_leigh) <a href="https://twitter.com/jaycre_leigh/status/1379188456480456707?ref_src=twsrc%5Etfw">April 5, 2021</a></blockquote>
 

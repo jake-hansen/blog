@@ -266,7 +266,7 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
-  jekyll-feed (~> 0.12)
+  jekyll-feed (~> 0.15)
   jekyll-seo-tag
   jekyll-text-theme
   tzinfo (~> 1.2)
